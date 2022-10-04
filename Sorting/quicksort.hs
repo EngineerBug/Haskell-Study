@@ -1,8 +1,8 @@
 --quicksort
+
 quicksort :: [Int] -> [Int]
 --catch sorts when they reach an empty or single element list
 quicksort [] = []
-quicksort [a] = [a]
 quicksort xs = 
     --choose the pivot
     let z = xs !! (length xs `div` 2) 
@@ -16,3 +16,4 @@ by the way, "let" and "in" are technically a single line
 
 main = do
     print (quicksort [5,8,4,9,1,8,3])
+    print (quicksort [2,8,1,5,3,2,12])
