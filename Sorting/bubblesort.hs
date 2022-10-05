@@ -26,7 +26,7 @@ bubsort :: [Int] -> [Int]
 bubsort [] = []
 bubsort [a] = [a]
 bubsort xs
-    | bubpass xs == xs = xs           --checks if the input will change with another pass
+    | bubpass xs == xs = xs             --checks if the input will change with another pass
     | otherwise = bubsort (bubpass xs)  --runs another pass if the input will change
 
 main = do
