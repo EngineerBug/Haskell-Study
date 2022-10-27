@@ -16,5 +16,5 @@ y = Node (Node Leaf 5 Leaf) 10 (Node Leaf 15 Leaf)
 
 main = do
     print (show x)      --"Node Leaf 20 Leaf"
-    print (search 5 y)     --True
-    print (search 13 x)    --False
+    print (search 5 y)  --True
+    print (search 13 x) --False
