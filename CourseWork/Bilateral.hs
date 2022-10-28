@@ -26,4 +26,3 @@ splits (x:xs) = ([x],(xs)):(zip (map (x:) (map fst (splits xs))) (map snd (split
 main = do
     print (number [9,1,2,4])    -- 9124 (from spec)
     print (splits [1,2,3,4])
-
