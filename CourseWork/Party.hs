@@ -1,8 +1,6 @@
 -- any imports go here
 
-
 {-Begin Question 1.1-}
-
 {-
 Arguments: an integer 
 
@@ -29,12 +27,10 @@ Output: a list of single digit integers corresponding to the digits of the argum
 digits :: Int -> [Int]
 digits 0 = []
 digits x = digits (x `div` 10) ++ [x `mod` 10]
-
 {-End Question 1.1-}
 
 
 {-Begin Question 1.2-}
-
 {-
 Arguments: objects we are trying to find
             the list  we are searching
@@ -117,7 +113,6 @@ Output: a list of all numbers that meet the par criteria (should have a length o
 -}
 pars :: [Int]
 pars = filter isPar [1000..9999]
-
 {-End Question 1.2-}
 
 
@@ -157,16 +152,12 @@ isParty (a,b)
     where
         x:xs = setDifference (digits a ++ digits b)
 
---makePair :: Int -> [Int] -> [(Int,Int)]
---makePair z = map (\ x -> (z, x))
-
 makePairs :: [Int] -> [(Int,Int)]
 makePairs [] = []
 makePairs (x:xs) = map (\ y -> (x, y)) xs ++ makePairs xs
 
 partys :: [(Int, Int)]
 partys = filter isParty (makePairs pars)
-
 {-End Question 1.3-}
 
 
