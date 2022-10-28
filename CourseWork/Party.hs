@@ -1,8 +1,6 @@
 -- any imports go here
 
-
 {-Begin Question 1.1-}
-
 {-
 Arguments: an integer 
 
@@ -23,15 +21,16 @@ Arguments: an integer
 
 Output: a list of single digit integers corresponding to the digits of the argument
 -}
+{-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
+{-# HLINT ignore "Use tuple-section" #-}
+
 digits :: Int -> [Int]
 digits 0 = []
 digits x = digits (x `div` 10) ++ [x `mod` 10]
-
 {-End Question 1.1-}
 
 
 {-Begin Question 1.2-}
-
 {-
 Arguments: objects we are trying to find
             the list  we are searching
@@ -114,25 +113,69 @@ Output: a list of all numbers that meet the par criteria (should have a length o
 -}
 pars :: [Int]
 pars = filter isPar [1000..9999]
-
 {-End Question 1.2-}
 
-{-
-{-Begin Question 1.3-}
-isParty :: (Int, Int) -> Bool
 
+{-Begin Question 1.3-}
+{-
+arguments: a list of digits
+    - note that while it is possible to input multi-digit numbers, the function follows the garbage-in-garbage-out ethic
+
+    - use filter with the `elem` operator
+    - compare a list of all positive digits with a compined list of the input values
+    - Note: while this could include type variables, 
+        it would need to pass in the digit domain as 
+        an argument, which seems bad practice.
+
+output: any positive digits (counting 0 as non-possitive) not contained in a or b
+-}
+setDifference :: [Int] -> [Int]
+setDifference xs = filter (not . (`elem` xs)) [1,2,3,4,5,6,7,8,9]
+{-
+Arguments: a pair of integers
+
+    - calculate any missing digits
+        - use "setDifference" to find any missing digits
+        - use pattern matching (x:xs) to get a missing digit and a list of any other missing digits
+            - if there are any members of xs, (a,b) is not a Party
+            - if xs is empty, x will be the required missing digit if (a,b)
+
+    - test if both numbers are pars with "isPar"
+    - test if the missing digit is a multiple of both inputs with `mod`.
+
+Output: if the input is a Party!
+-}
+isParty :: (Int, Int) -> Bool
+isParty (a,b)
+    | isPar a && isPar b && null xs && a `mod` x == 0 && b `mod` x == 0 = True
+    | otherwise = False
+    where
+        x:xs = setDifference (digits a ++ digits b)
+
+makePairs :: [Int] -> [(Int,Int)]
+makePairs [] = []
+makePairs (x:xs) = map (\ y -> (x, y)) xs ++ makePairs xs
 
 partys :: [(Int, Int)]
-
+partys = filter isParty (makePairs pars)
 {-End Question 1.3-}
 
--}
+
 -- any main functions for testing goes here
 main :: IO ()
 main = do
-    --testing full domain of the "digits" function
+    --testing full domain of "digits"
     print (digits 1234567890) -- [1,2,3,4,5,6,7,8,9,0]
+
+    --testing all facets of "isPar"
     print (isPar 2678)  -- True     test true case (from spec)
     print (isPar 3412)  -- False    test divisibility
     print (isPar 1111)  -- False    test duplication
-    print (length pars) -- 44
+    print (length pars) -- 44       test isPar validity
+
+    --testing all functions involved in calculating "partys"
+    print (setDifference [1,2,3,4,5,6,7,8]) -- [9]
+    print (isParty (2754, 1836)) -- true (from spec)
+    print (isParty (2754, 2754)) -- false
+    print (makePairs [1,2,3])
+    print partys
