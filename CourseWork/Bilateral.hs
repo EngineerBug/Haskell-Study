@@ -45,6 +45,14 @@ isPalendrome (as,bs)
         num = show (number as * number bs)
         evenOrOddLength = length num `mod` 2
         mid = length num `div` 2
+{-
+isPalendrome :: ([Int],[Int]) -> Bool
+isPalendrome (as,bs)
+    | reverse (num) == num = True
+    | otherwise = False
+    where
+        num = show (number as * number bs)
+-}
 
 isAcceptable :: ([Int],[Int]) -> Bool
 isAcceptable (as,bs)
