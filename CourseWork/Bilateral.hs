@@ -81,3 +81,5 @@ main = do
         -- test1: 2m 53s
         -- test2: stack overflow because of a typo
         -- test3: 2m 47s
+        -- test4: (on repl) 56s
+        -- test5: (on repl) 55s
