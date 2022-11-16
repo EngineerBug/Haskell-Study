@@ -21,8 +21,6 @@ Arguments: an integer
 
 Output: a list of single digit integers corresponding to the digits of the argument
 -}
-{-# OPTIONS_GHC -Wno-unrecognised-pragmas #-}
-{-# HLINT ignore "Use tuple-section" #-}
 
 digits :: Int -> [Int]
 digits 0 = []
