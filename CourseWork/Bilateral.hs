@@ -71,15 +71,16 @@ acceptables = filter isAcceptable possibles
 
 main :: IO ()
 main = do
-    print (number [9,1,2,4])    -- 9124 (from spec)
-    print (length (splits [1..9]))
-    print (isAcceptable ([7,1,6,3], [5,9,2,4,8])) -- True (from spec)
-    print (isAcceptable ([7,6,1,3], [5,9,2,4,8])) -- False
+    print (number [9,1,2,4])                        -- 9124 (from spec)
+    print (length (splits [1..9]))                  --8
+    print (isAcceptable ([7,1,6,3], [5,9,2,4,8]))   -- True (from spec)
+    print (isAcceptable ([7,6,1,3], [5,9,2,4,8]))   -- False
     --print (splits [1..9])
     --print (length possibles)  -- 2903040 (from spec) (does run, but slowly)
-    --print (length acceptables)  
+    print (length acceptables)  
         -- test1: 2m 53s
         -- test2: stack overflow because of a typo
         -- test3: 2m 47s
-        -- test4: (on repl) 56s
-        -- test5: (on repl) 55s
+        -- test4: (on laptop repl) 56s
+        -- test5: (on laptop repl) 55s
+        -- test6: (on desktop repl) 50s
