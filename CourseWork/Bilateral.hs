@@ -3,7 +3,10 @@ import Data.List ( permutations )
 
 {-Begin Question 2.1-}
 number :: [Int] -> Int
-number xs = read (concatMap show xs) :: Int
+number [x] = x
+number (x:xs) = (10 ^ length xs * x) + number xs
+
+--old: number xs = read (concatMap show xs) :: Int
 {-End Question 2.1-}
 
 {-Begin Question 2.2-}
@@ -31,38 +34,77 @@ possibles = concatMap splits (permutations [1..9])
 {-End Question 2.2-}
 
 {-Begin Question 2.3-}
-shortest :: ([Int], [Int]) -> [Int]
-shortest (as,bs)
+{-
+Arguments: two lists of digits
+
+    - turn both lists into numbers with "number"
+    - multiply the numbers togeather
+    - divide by ten until there is only one digit
+
+Output: the remaining digit
+-}
+firstDigit :: [Int] -> [Int] -> Int -> Int
+firstDigit as bs x
+  | num < 10 = num
+  | otherwise = num `div` 10
+  where num = x `div` (10 ^ (length as + length bs - 2))
+
+{-
+Arguments: to lists of digits
+
+    - turn both lists to numbers with "number"
+    - compare the size of both numbers
+
+Output: the smaller of the two lists
+-}
+shortest :: [Int] -> [Int] -> [Int]
+shortest as bs
     | number as < number bs = as
     | otherwise = bs
 
-isPalendrome :: ([Int],[Int]) -> Bool
-isPalendrome (as,bs)
-    | evenOrOddLength == 0 && reverse (take mid num) == drop mid num = True
-    | evenOrOddLength == 1 && reverse (take mid num) == drop (mid+1) num = True
-    | otherwise = False
-    where
-        num = show (number as * number bs)
-        evenOrOddLength = length num `mod` 2
-        mid = length num `div` 2
 {-
-isPalendrome :: ([Int],[Int]) -> Bool
-isPalendrome (as,bs)
+Arguments: two lists of numbers
+
+    - turn both lists to numbers with "number"
+    - multiply the numbers togeather
+    - if the reversed number is the number, true
+
+Output: true of the result is symmetric, otherwise false
+-}
+isPalendrome :: Int -> Bool
+isPalendrome x
     | reverse (num) == num = True
     | otherwise = False
     where
-        num = show (number as * number bs)
--}
+        num = show x
 
+{-
+Arguments: a tuple of lists of digits
+
+    - check if the multiplied number is symmetric
+    - get the first digit of the multiplied number
+        - check if it is 4
+    - get the last digit of the smaller number
+        - check if it is 3
+    
+Output: true of the pair is a possible solution
+-}
 isAcceptable :: ([Int],[Int]) -> Bool
 isAcceptable (as,bs)
-    | isPalendrome (as,bs) && head num == '4' && last short == 3 = True
+    | isPalendrome result && isFour == 4 && shortDigit == 3 = True
     | otherwise = False
     where
-        num = show (number as * number bs)
-        short = shortest (as, bs)
+        result = number as * number bs
+        isFour = firstDigit as bs result
+        shortDigit = (number (shortest as bs) `rem` 10)
 
+{-
+Arguments: none
 
+    - apply isAcceptable as a predicate to all permutations of [1..9]
+
+Output: a list of all possible solutions
+-}
 acceptables :: [([Int],[Int])]
 acceptables = filter isAcceptable possibles
 {-End Question 2.3-}
@@ -73,13 +115,16 @@ main :: IO ()
 main = do
     print (number [9,1,2,4])    -- 9124 (from spec)
     print (length (splits [1..9]))
-    print (isAcceptable ([7,1,6,3], [5,9,2,4,8])) -- True (from spec)
-    print (isAcceptable ([7,6,1,3], [5,9,2,4,8])) -- False
+    print (isAcceptable ([7,1,6,3],[5,9,2,4,8])) -- True (from spec)
+    print (isAcceptable ([7,6,1,3],[5,9,2,4,8])) -- False
     --print (splits [1..9])
     --print (length possibles)  -- 2903040 (from spec) (does run, but slowly)
-    --print (length acceptables)  
+    print (length acceptables)  
         -- test1: 2m 53s
         -- test2: stack overflow because of a typo
         -- test3: 2m 47s
         -- test4: (on repl) 56s
         -- test5: (on repl) 55s
+        -- test6: (repl, improve number) 44s
+        -- test7: (repl, improve isAcceptable) 37s
+        -- test8: (compile with ghc) 17s
