@@ -10,11 +10,45 @@ number (x:xs) = (10 ^ length xs * x) + number xs
 {-End Question 2.1-}
 
 {-Begin Question 2.2-}
-splits :: [a] -> [([a],[a])]
-splits [] = []
+splits :: [Int] -> [([Int],[Int])]
 splits [a,b] = [([a],[b])]
-splits (x:xs) = ([x],xs):zip (map ((x:) . fst) (splits xs)) (map snd (splits xs))
+splits xs =  combine (firsthalf xs []) (secondhalf xs)
 
+{-
+Arguments: 
+    a list of elements to calculate, 
+    the current inner list (initially an empty list)
+
+    - add the current element to the current inner list
+    - add the current inner list to the outer list of lists
+    - when there are two elements, return the final inner list
+
+Output: a list of lists
+-}
+firsthalf :: [Int] -> [Int] -> [[Int]]
+firsthalf [x,z] ys = [ys ++ [x]]
+firsthalf (x:xs) ys = (ys ++ [x]) : (firsthalf xs (ys ++ [x]))
+
+{-
+Argument: a list of numbers
+
+  - add the tail of the list to the output
+  - calculate the tail of the tail
+  - when there are two elements left, give only the second
+
+Output: a list of lists
+-}
+secondhalf :: [Int] -> [[Int]]
+secondhalf [x,z] = [[z]]
+secondhalf (x:xs) = xs : secondhalf xs
+
+{-
+Arguments: two lists of lists of equal length
+Output: each corresponding list zipped togeather
+-}
+combine :: [[Int]] -> [[Int]] -> [([Int],[Int])]
+combine [] [] = []
+combine (x:xs) (y:ys) = (x,y) : combine xs ys
 {-
 Arguments:
 
@@ -107,16 +141,19 @@ Output: a list of all possible solutions
 -}
 acceptables :: [([Int],[Int])]
 acceptables = filter isAcceptable possibles
+
 {-End Question 2.3-}
 
 -- any main functions for testing goes here
 
 main :: IO ()
 main = do
-    print (number [9,1,2,4])                        -- 9124 (from spec)
-    print (length (splits [1..9]))                  --8
-    print (isAcceptable ([7,1,6,3], [5,9,2,4,8]))   -- True (from spec)
-    print (isAcceptable ([7,6,1,3], [5,9,2,4,8]))   -- False
+    print (number [9,1,2,4])    -- 9124 (from spec)
+    print (length (splits [1..9]))
+    print (firsthalf [1,2,3,4] [])
+    print (secondhalf [1,2,3,4])
+    -- print (isAcceptable ([7,1,6,3],[5,9,2,4,8])) -- True (from spec)
+    -- print (isAcceptable ([7,6,1,3],[5,9,2,4,8])) -- False
     --print (splits [1..9])
     --print (length possibles)  -- 2903040 (from spec) (does run, but slowly)
     print (length acceptables)  
@@ -127,4 +164,5 @@ main = do
         -- test5: (on repl) 55s
         -- test6: (repl, improve number) 44s
         -- test7: (repl, improve isAcceptable) 37s
-        -- test8: (compile with ghc) 17s
+        -- test8: (compile with ghc beforehand) 17s
+        -- test9: (repl, update split) 25s
