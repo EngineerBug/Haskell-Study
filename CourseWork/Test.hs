@@ -10,6 +10,7 @@ split2Nums x = a `rem` b
     (a,b) = (read (take 2 (show x)) :: Int, read (drop 2 (show x)) :: Int)
 
 main = do
-    print (splitNum 1234)
-    print (split2Nums 3612)
-    print (digits 1234)
+    --print (splitNum 1234)
+    --print (split2Nums 3612)
+    --print (digits 1234)
+    print (reverse [1,2,3,4])
