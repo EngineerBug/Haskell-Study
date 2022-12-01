@@ -33,7 +33,9 @@ firsthalf :: [Int] -> [Int] -> [[Int]]
 firsthalf [] [] = [[]]
 firsthalf [] ys = [[]]
 firsthalf [x,z] ys = [ys ++ [x]]
-firsthalf (x:xs) ys = (ys ++ [x]) : firsthalf xs (ys ++ [x])
+firsthalf (x:xs) ys = 
+    xys : firsthalf xs xys
+    where xys = ys ++ [x]
 
 {-
 Argument: a list of numbers
@@ -121,7 +123,7 @@ Output: true of the result is symmetric, otherwise false
 -}
 isPalendrome :: Int -> Bool
 isPalendrome x
-    | reverse (num) == num = True
+    | reverse num == num = True
     | otherwise = False
     where
         num = show x
@@ -142,9 +144,10 @@ isAcceptable (as,bs)
     | isPalendrome (a*b) && isFour == 4 && shortDigit == 3 = True
     | otherwise = False
     where
-        result = number as * number bs
-        isFour = firstDigit as bs result
-        shortDigit = number (shortest as bs) `rem` 10
+        a = number as
+        b = number bs
+        isFour = firstDigit as bs (a*b)
+        shortDigit = shortest a b `rem` 10
 
 {-
 Arguments: none
