@@ -1,6 +1,5 @@
 -- any imports go here
 import Data.List ( permutations )
-import System.Win32 (COORD(x))
 
 {-Begin Question 2.1-}
 --O(n^2), length x itself
@@ -12,56 +11,14 @@ number (x:xs) = (10 ^ length xs * x) + number xs
 {-End Question 2.1-}
 
 {-Begin Question 2.2-}
---O(n^4) combine x firsthalf x secondhalf 
-splits :: [Int] -> [([Int],[Int])]
-splits [a,b] = [([a],[b])]
-splits xs = combine (firsthalf xs []) (secondhalf xs)
+split :: Int -> [Int] -> [([Int],[Int])]
+split x [] = []
+split x xs
+    | x < length xs = splitAt x xs : split (x+1) xs
+    | otherwise = []
 
-{-
-Arguments: 
-    a list of elements to calculate, 
-    the current inner list (initially an empty list)
-
-    - add the current element to the current inner list
-    - add the current inner list to the outer list of lists
-    - when there are two elements, return the final inner list
-    - O(n^2) append x itself
-
-Output: a list of lists
--}
-firsthalf :: [Int] -> [Int] -> [[Int]]
-firsthalf [] [] = [[]]
-firsthalf [] ys = [[]]
-firsthalf [x,z] ys = [ys ++ [x]]
-firsthalf (x:xs) ys = 
-    xys : firsthalf xs xys
-    where xys = ys ++ [x]
-
-{-
-Argument: a list of numbers
-
-  - add the tail of the list to the output
-  - calculate the tail of the tail
-  - when there are two elements left, give only the second
-  - O(n) itself
-
-Output: a list of lists
--}
-secondhalf :: [Int] -> [[Int]]
-secondhalf [] = [[]]
-secondhalf [x,z] = [[z]]
-secondhalf (x:xs) = xs : secondhalf xs
-
-{-
-Arguments: two lists of lists of equal length
-Output: each corresponding list zipped togeather
-O(n)
--}
-combine :: [[Int]] -> [[Int]] -> [([Int],[Int])]
-combine [] [] = []
-combine [] ys = []
-combine xs [] = []
-combine (x:xs) (y:ys) = (x,y) : combine xs ys
+splits :: [Int] -> [([Int], [Int])]
+splits = split 1
 {-
 Arguments:
 
@@ -167,13 +124,13 @@ main :: IO ()
 main = do
     print (number [9,1,2,4])    -- 9124 (from spec)
     print (length (splits [1..9]))
-    print (firsthalf [1,2,3,4] [])
-    print (secondhalf [1,2,3,4])
+    --print (firsthalf [1,2,3,4] [])
+    --print (secondhalf [1,2,3,4])
     -- print (isAcceptable ([7,1,6,3],[5,9,2,4,8])) -- True (from spec)
     -- print (isAcceptable ([7,6,1,3],[5,9,2,4,8])) -- False
     --print (splits [1..9])
     --print (length possibles)  -- 2903040 (from spec) (does run, but slowly)
-    print (length acceptables)  
+    print (length acceptables)
         -- test1: 2m 53s
         -- test2: stack overflow because of a typo
         -- test3: 2m 47s
