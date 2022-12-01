@@ -3,7 +3,7 @@ import Data.List ( permutations )
 
 {-Begin Question 2.1-}
 number :: [Int] -> Int
-number [x] = x
+number [] = 0
 number (x:xs) = (10 ^ length xs * x) + number xs
 
 --old: number xs = read (concatMap show xs) :: Int
@@ -27,6 +27,7 @@ Output: a list of lists
 -}
 firsthalf :: [Int] -> [Int] -> [[Int]]
 firsthalf [] [] = [[]]
+firsthalf [] ys = [[]]
 firsthalf [x,z] ys = [ys ++ [x]]
 firsthalf (x:xs) ys = (ys ++ [x]) : firsthalf xs (ys ++ [x])
 
@@ -40,6 +41,7 @@ Argument: a list of numbers
 Output: a list of lists
 -}
 secondhalf :: [Int] -> [[Int]]
+secondhalf [] = [[]]
 secondhalf [x,z] = [[z]]
 secondhalf (x:xs) = xs : secondhalf xs
 
@@ -49,6 +51,8 @@ Output: each corresponding list zipped togeather
 -}
 combine :: [[Int]] -> [[Int]] -> [([Int],[Int])]
 combine [] [] = []
+combine [] ys = []
+combine xs [] = []
 combine (x:xs) (y:ys) = (x,y) : combine xs ys
 {-
 Arguments:
@@ -140,6 +144,7 @@ Arguments: none
 
 Output: a list of all possible solutions
 -}
+
 acceptables :: [([Int],[Int])]
 acceptables = filter isAcceptable possibles
 
@@ -156,8 +161,8 @@ main = do
     -- print (isAcceptable ([7,1,6,3],[5,9,2,4,8])) -- True (from spec)
     -- print (isAcceptable ([7,6,1,3],[5,9,2,4,8])) -- False
     --print (splits [1..9])
-    print (length possibles)  -- 2903040 (from spec) (does run, but slowly)
-    print (length acceptables)  
+    --print (length possibles)  -- 2903040 (from spec) (does run, but slowly)
+    --print (length acceptables)  
         -- test1: 2m 53s
         -- test2: stack overflow because of a typo
         -- test3: 2m 47s
@@ -167,3 +172,4 @@ main = do
         -- test7: (repl, improve isAcceptable) 37s
         -- test8: (compile with ghc beforehand) 17s
         -- test9: (repl, update split) 25s
+        -- test10: (repl, restart computer) 18s
