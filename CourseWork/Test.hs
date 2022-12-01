@@ -76,4 +76,4 @@ main = do
     --print (split2Nums 3612)
     --print (digits 1234)
     print "Hello"
-    print (splits 1 [1,2,3,4])
+    print (splits2 0 [1,2,3,4])

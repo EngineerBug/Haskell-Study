@@ -39,22 +39,6 @@ possibles = concatMap splits (permutations [1..9])
 
 {-Begin Question 2.3-}
 {-
-Arguments: two lists of digits
-
-    - turn both lists into numbers with "number"
-    - multiply the numbers togeather
-    - divide by ten until there is only one digit
-    - O(n^2), the algorithm is O(1) however using length twice makes it O(n^2)
-
-Output: the remaining digit
--}
-firstDigit :: [Int] -> [Int] -> Int -> Int
-firstDigit as bs x
-  | num < 10 = num
-  | otherwise = num `div` 10
-  where num = x `div` (10 ^ (length as + length bs - 2))
-
-{-
 Arguments: to lists of digits
 
     - turn both lists to numbers with "number"
@@ -98,19 +82,16 @@ Output: true of the pair is a possible solution
 -}
 isAcceptable :: ([Int],[Int]) -> Bool
 isAcceptable (as,bs)
-    | isPalendrome (a*b) && isFour == 4 && shortDigit == 3 = True
+    | isPalendrome (a*b) && isFour == '4' && shortDigit == 3 = True
     | otherwise = False
     where
         a = number as
         b = number bs
-        isFour = firstDigit as bs (a*b)
+        isFour = head (show (a*b))
         shortDigit = shortest a b `rem` 10
 
 {-
 Arguments: none
-
-    - apply isAcceptable as a predicate to all permutations of [1..9]
-
 Output: a list of all possible solutions
 -}
 acceptables :: [([Int],[Int])]

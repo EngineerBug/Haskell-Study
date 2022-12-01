@@ -6,7 +6,7 @@ fizzBuzz x
     | otherwise = show x
 
 fizzBuzzList :: [[Char]]
-fizzBuzzList = map (fizzBuzz) [1..]
+fizzBuzzList = map fizzBuzz [1..]
 
 main = do
     print(take 15 fizzBuzzList)
