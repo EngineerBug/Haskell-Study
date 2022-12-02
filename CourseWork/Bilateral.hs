@@ -11,6 +11,7 @@ number (x:xs) = (10 ^ length xs * x) + number xs
 {-End Question 2.1-}
 
 {-Begin Question 2.2-}
+--O(n^3) length x splitAt x itself
 split :: Int -> [Int] -> [([Int],[Int])]
 split x [] = []
 split x xs
@@ -43,7 +44,7 @@ Arguments: to lists of digits
 
     - turn both lists to numbers with "number"
     - compare the size of both numbers
-    - O(1) because of "number"
+    - O(1)
 
 Output: the smaller of the two lists
 -}
@@ -111,7 +112,7 @@ main = do
     -- print (isAcceptable ([7,6,1,3],[5,9,2,4,8])) -- False
     --print (splits [1..9])
     --print (length possibles)  -- 2903040 (from spec) (does run, but slowly)
-    print (length acceptables)
+    print acceptables
         -- test1: 2m 53s
         -- test2: stack overflow because of a typo
         -- test3: 2m 47s
