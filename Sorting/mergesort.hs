@@ -1,5 +1,3 @@
-halve xs = splitAt (length xs `div` 2) xs
-
 merge xs [] = xs
 merge [] ys = ys
 merge (x:xs) (y:ys)
@@ -8,7 +6,7 @@ merge (x:xs) (y:ys)
 
 msort [x] = [x]
 msort xs =
-    let (l,r) = halve xs
+    let (l,r) = splitAt (length xs `div` 2) xs
     in merge (msort l) (msort r)
 
 main = do
