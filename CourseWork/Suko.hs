@@ -10,9 +10,21 @@ indices [] xs = []
 indices is [] = []
 indices (i:is) xs = index i xs : indices is xs
 
+--all permutations of 1..9
 possibles :: [[Int]]
 possibles = permutations [1..9]
 
+{-
+Arguments: 
+    the four numebrs between squares
+    the three sums of the coloured boxed
+    a possible permutation of 1..9
+
+Check that the corner digits sum to T0,1,2,3
+Check that colourd digits sum to U, V and W
+
+Output: true/false
+-}
 acceptable :: Int -> Int -> Int -> Int -> [Int] -> Int -> [Int] -> Int -> [Int] -> Int -> [Int] -> Bool
 acceptable t1 t2 t3 t4 us u vs v ws w grid = 
        t1 == sum (indices [0,1,3,4] grid)
@@ -23,7 +35,7 @@ acceptable t1 t2 t3 t4 us u vs v ws w grid =
     && v == sum (indices vs grid)
     && w == sum (indices ws grid)
 
---find the item in possible that matches the elements in acceptable
+--find the item in possible that matches the criteria in acceptable
 suko :: Int -> Int -> Int -> Int -> [Int] -> Int -> [Int] -> Int -> [Int] -> Int -> [[Int]]
 suko t1 t2 t3 t4 us u vs v ws w = filter (acceptable t1 t2 t3 t4 us u vs v ws w) possibles
 
