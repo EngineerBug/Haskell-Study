@@ -32,9 +32,9 @@ acceptable xs =
         b = number (drop 3 (take 6 xs))
         c = number (drop 6 xs)
 
-trait ::[[Int]]
+trait :: [[Int]]
 trait = filter acceptable possibles
 
 
 main = do
-    print (legnth trait)
+    print (length trait) -- 8
