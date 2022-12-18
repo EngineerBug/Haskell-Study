@@ -3,8 +3,8 @@ import Data.List
 readAndWrite :: String -> String -> IO String
 readAndWrite fn s = writeFile fn s >> readFile fn
 
-reading :: String -> IO String
-reading fn = readFile fn
+reading :: String -> IO ()
+reading fn = readFile fn >>= print
 
 --makeList :: String -> [String]
 --makeList fn = lines (readFile fn)
@@ -14,5 +14,5 @@ reading fn = readFile fn
 main :: IO ()
 main = do
     --readAndWrite "a.txt" "a" >>= putStrLn
-    reading "text.txt" >>= print
-    makeList "text.txt" >>= print
+    reading "text.txt"
+    --makeList "text.txt" >>= print
