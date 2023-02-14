@@ -14,3 +14,4 @@ fizzBuzzList = map fizzBuzz [1..]
 
 main = do
     print(take 15 fizzBuzzList)
+    print"Hi there, this is just to test the yml file."
